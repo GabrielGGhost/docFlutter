@@ -16,10 +16,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final wordPair = WordPair.random(); // Add this line.
     return MaterialApp(
-      title: 'Welcome to Flutter',
+      title: 'Gerador de Plavaras Aleatórias',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
+          title: const Text('Gerador de Plavaras Aleatórias'),
         ),
         body: Center(                          // Drop the const, and
           //child: Text('Hello World'),        // Replace this text...
