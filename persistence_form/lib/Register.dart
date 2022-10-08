@@ -10,9 +10,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-
   final _formKey = GlobalKey<FormState>();
   final pokemonNameController = TextEditingController();
+  final type1Controller = TextEditingController();
+  final type2Controller = TextEditingController();
 
   @override
   void initState() {
@@ -23,6 +24,8 @@ class _RegisterState extends State<Register> {
   @override
   void dispose() {
     pokemonNameController.dispose();
+    type1Controller.dispose();
+    type2Controller.dispose();
     super.dispose();
   }
 
@@ -41,24 +44,47 @@ class _RegisterState extends State<Register> {
               TextFormField(
                 controller: pokemonNameController,
                 validator: (value) {
-                  if(value == null || value.isEmpty){
+                  if (value == null || value.isEmpty) {
                     return 'Informar o nome do pokemon';
                   }
                 },
-                onChanged: (text){
-
-                },
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Nome do pokemon'
-                ),
+                    border: OutlineInputBorder(), labelText: 'Nome do pokemon'),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8,right: 5),
+                      child: TextFormField(
+                        controller: type1Controller,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informar pelo menos um tipo';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Tipo 1'),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 8,left: 5),
+                    child: TextFormField(
+                      controller: type2Controller,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Tipo 2'),
+                    ),
+                  ))
+                ],
               ),
               ElevatedButton(
-                  onPressed: (){
-                    if(_formKey.currentState!.validate()){
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Pokemon cadastrado"))
-                      );
+                          const SnackBar(content: Text("Pokemon cadastrado")));
                     }
                   },
                   child: const Text("Cadastrar"))
@@ -71,8 +97,14 @@ class _RegisterState extends State<Register> {
           showDialog(
             context: context,
             builder: (_) {
+              String resume = '${pokemonNameController.text.trim()}\r\n';
+              resume += 'Tipo 1: ${type1Controller.text.trim()}';
+              if (type2Controller.text.trim().isNotEmpty) {
+                resume += '   Tipo 2: ${type2Controller.text.trim()}';
+              }
+
               return AlertDialog(
-                content: Text(pokemonNameController.text),
+                content: Text(resume),
               );
             },
           );
