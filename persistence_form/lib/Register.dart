@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Constantes.dart';
+import 'List.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -113,7 +114,7 @@ class _RegisterState extends State<Register> {
             padding: const EdgeInsets.only(bottom: 5),
             child: FloatingActionButton(
                 tooltip: 'Focus Second Text Field',
-                child: const Icon(Icons.edit),
+                heroTag: 'btnFocus',
                 onPressed: () {
                   if (pokemonNameController.text.isEmpty){
                     pokemonNameFocus.requestFocus();
@@ -122,9 +123,21 @@ class _RegisterState extends State<Register> {
                   } else if (type2Controller.text.isEmpty) {
                     type2Focus.requestFocus();
                   }
+                },
+                child: const Icon(Icons.edit)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: FloatingActionButton(
+                tooltip: 'Lista de pokemon',
+                heroTag: 'btnList',
+                child: const Icon(Icons.list),
+                onPressed: () {
+                  Navigator.pushNamed(context, List.route);
                 }),
           ),
           FloatingActionButton(
+            heroTag: 'btnResume',
             onPressed: () {
               showDialog(
                 context: context,
