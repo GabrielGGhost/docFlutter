@@ -12,6 +12,19 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
 
   final _formKey = GlobalKey<FormState>();
+  final pokemonNameController = TextEditingController();
+
+  @override
+  void initState() {
+    pokemonNameController.addListener(_printLatestValue);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pokemonNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +39,19 @@ class _RegisterState extends State<Register> {
           child: Column(
             children: [
               TextFormField(
+                controller: pokemonNameController,
                 validator: (value) {
                   if(value == null || value.isEmpty){
                     return 'Informar o nome do pokemon';
                   }
                 },
+                onChanged: (text){
+
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Nome do pokemon'
+                ),
               ),
               ElevatedButton(
                   onPressed: (){
@@ -46,5 +67,9 @@ class _RegisterState extends State<Register> {
         ),
       )
     );
+  }
+
+  void _printLatestValue() {
+    print('Second text field: ${pokemonNameController.text}');
   }
 }
