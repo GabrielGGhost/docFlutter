@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +46,10 @@ class _FetchDataState extends State<FetchData> {
 
   Future<Album> fetchAlbum() async {
     final response = await http
-        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Basic your_api_token_here',
+      },);
 
     if (response.statusCode == 200) {
       return Album.fromJson(jsonDecode(response.body));
