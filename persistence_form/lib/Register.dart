@@ -15,9 +15,17 @@ class _RegisterState extends State<Register> {
   final type1Controller = TextEditingController();
   final type2Controller = TextEditingController();
 
+  late FocusNode pokemonNameFocus;
+  late FocusNode type1Focus;
+  late FocusNode type2Focus;
+
   @override
   void initState() {
     pokemonNameController.addListener(_printLatestValue);
+    pokemonNameFocus = FocusNode();
+    type1Focus = FocusNode();
+    type2Focus = FocusNode();
+
     super.initState();
   }
 
@@ -26,6 +34,9 @@ class _RegisterState extends State<Register> {
     pokemonNameController.dispose();
     type1Controller.dispose();
     type2Controller.dispose();
+    pokemonNameFocus.dispose();
+    type1Focus.dispose();
+    type2Focus.dispose();
     super.dispose();
   }
 
@@ -43,6 +54,7 @@ class _RegisterState extends State<Register> {
             children: [
               TextFormField(
                 controller: pokemonNameController,
+                focusNode: pokemonNameFocus,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Informar o nome do pokemon';
@@ -55,9 +67,10 @@ class _RegisterState extends State<Register> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8,right: 5),
+                      padding: const EdgeInsets.only(top: 8, right: 5),
                       child: TextFormField(
                         controller: type1Controller,
+                        focusNode: type1Focus,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Informar pelo menos um tipo';
@@ -71,9 +84,10 @@ class _RegisterState extends State<Register> {
                   ),
                   Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.only(top: 8,left: 5),
+                    padding: const EdgeInsets.only(top: 8, left: 5),
                     child: TextFormField(
                       controller: type2Controller,
+                      focusNode: type2Focus,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Tipo 2'),
                     ),
@@ -92,25 +106,45 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) {
-              String resume = '${pokemonNameController.text.trim()}\r\n';
-              resume += 'Tipo 1: ${type1Controller.text.trim()}';
-              if (type2Controller.text.trim().isNotEmpty) {
-                resume += '   Tipo 2: ${type2Controller.text.trim()}';
-              }
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: FloatingActionButton(
+                tooltip: 'Focus Second Text Field',
+                child: const Icon(Icons.edit),
+                onPressed: () {
+                  if (pokemonNameController.text.isEmpty){
+                    pokemonNameFocus.requestFocus();
+                  } else if (type1Controller.text.isEmpty){
+                    type1Focus.requestFocus();
+                  } else if (type2Controller.text.isEmpty) {
+                    type2Focus.requestFocus();
+                  }
+                }),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) {
+                  String resume = '${pokemonNameController.text.trim()}\r\n';
+                  resume += 'Tipo 1: ${type1Controller.text.trim()}';
+                  if (type2Controller.text.trim().isNotEmpty) {
+                    resume += '   Tipo 2: ${type2Controller.text.trim()}';
+                  }
 
-              return AlertDialog(
-                content: Text(resume),
+                  return AlertDialog(
+                    content: Text(resume),
+                  );
+                },
               );
             },
-          );
-        },
-        tooltip: 'Show me the value!',
-        child: const Icon(Icons.text_fields),
+            tooltip: 'Show me the value!',
+            child: const Icon(Icons.text_fields),
+          )
+        ],
       ),
     );
   }
