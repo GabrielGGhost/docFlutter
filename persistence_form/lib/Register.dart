@@ -20,6 +20,8 @@ class _RegisterState extends State<Register> {
   late FocusNode type1Focus;
   late FocusNode type2Focus;
 
+
+
   @override
   void initState() {
     pokemonNameController.addListener(_printLatestValue);
@@ -137,7 +139,7 @@ class _RegisterState extends State<Register> {
                 }),
           ),
           FloatingActionButton(
-            heroTag: 'btnResume',
+            heroTag: 'btnResume ',
             onPressed: () {
               showDialog(
                 context: context,
