@@ -6,5 +6,7 @@ class CreateTables{
     db.execute(
       "CREATE TABLE pokemon(id INTEGER PRIMARY KEY, name TEXT, type1 TEXT, type2 TEXT)"
     );
+
+    print("Tabelas criadas.");
   }
 }

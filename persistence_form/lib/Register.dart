@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistence_form/model/Pokemon.dart';
+import 'package:sqflite/sqflite.dart';
 import 'Constantes.dart';
 import 'List.dart';
+import 'package:path/path.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -19,8 +22,6 @@ class _RegisterState extends State<Register> {
   late FocusNode pokemonNameFocus;
   late FocusNode type1Focus;
   late FocusNode type2Focus;
-
-
 
   @override
   void initState() {
@@ -100,8 +101,7 @@ class _RegisterState extends State<Register> {
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Pokemon cadastrado")));
+                      savePokemon();
                     }
                   },
                   child: const Text("Cadastrar"))
@@ -118,9 +118,9 @@ class _RegisterState extends State<Register> {
                 tooltip: 'Focus Second Text Field',
                 heroTag: 'btnFocus',
                 onPressed: () {
-                  if (pokemonNameController.text.isEmpty){
+                  if (pokemonNameController.text.isEmpty) {
                     pokemonNameFocus.requestFocus();
-                  } else if (type1Controller.text.isEmpty){
+                  } else if (type1Controller.text.isEmpty) {
                     type1Focus.requestFocus();
                   } else if (type2Controller.text.isEmpty) {
                     type2Focus.requestFocus();
@@ -166,5 +166,36 @@ class _RegisterState extends State<Register> {
 
   void _printLatestValue() {
     print('Second text field: ${pokemonNameController.text}');
+  }
+
+  Future<void> savePokemon() async {
+    try{
+      final db = await openDatabase(join(await getDatabasesPath(), 'pokemonList.db'));
+
+      Pokemon pokemon = Pokemon(
+          name: pokemonNameController.text,
+          type1: type1Controller.text,
+          type2: type2Controller.text);
+
+      await db.insert(
+        'pokemon',
+        pokemon.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print("Pookemon Inserido");
+      clearForm();
+    } catch (ex) {
+      print("Erro ao inserir pokemon\r\n$ex");
+    }
+  }
+
+  void clearForm() {
+    setState(() {
+      pokemonNameController.clear();
+      type1Controller.clear();
+      type2Controller.clear();
+
+      pokemonNameFocus.requestFocus();
+    });
   }
 }
