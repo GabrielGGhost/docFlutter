@@ -72,7 +72,7 @@ class _DataHttpState extends State<DataHttp> {
     if (response.statusCode == 200) {
       return Album.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Erro ao carregar album');
+      throw Exception('Failed to load album');
     }
   }
 

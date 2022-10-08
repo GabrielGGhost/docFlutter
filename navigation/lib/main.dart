@@ -5,6 +5,7 @@ import 'package:navigation/ex4/Colors.dart';
 import 'package:navigation/ex5-returnFromScreen/SelectionScreen.dart';
 import 'package:navigation/ex6-sendData/TodoList.dart';
 import 'package:navigation/ex7-DeleteNetData/DataHttp.dart';
+import 'package:navigation/ex8-fetchData/FetchData.dart';
 
 import 'ex1/MainScreen.dart';
 import 'ex5-returnFromScreen/home.dart';
@@ -14,7 +15,7 @@ void main() {
   runApp(MaterialApp(
     initialRoute: '/',
     routes: {
-      '/' : (context) => const DataHttp(),
+      '/' : (context) => const FetchData(),
       '/second' : (context) => const SecondRouteName(),
       ExtractArgumentsScreen.routeName: (context) =>
       const ExtractArgumentsScreen(),
