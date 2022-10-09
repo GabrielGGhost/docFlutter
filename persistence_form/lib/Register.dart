@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:persistence_form/model/Pokemon.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Constantes.dart';
-import 'List.dart';
-import 'package:path/path.dart';
+import 'Record.dart';
+import 'package:path/path.dart' as Path;
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
+  static const route = 'register';
 
   @override
   State<Register> createState() => _RegisterState();
@@ -128,16 +129,6 @@ class _RegisterState extends State<Register> {
                 },
                 child: const Icon(Icons.edit)),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: FloatingActionButton(
-                tooltip: 'Lista de pokemon',
-                heroTag: 'btnList',
-                child: const Icon(Icons.list),
-                onPressed: () {
-                  Navigator.pushNamed(context, List.route);
-                }),
-          ),
           FloatingActionButton(
             heroTag: 'btnResume ',
             onPressed: () {
@@ -170,7 +161,7 @@ class _RegisterState extends State<Register> {
 
   Future<void> savePokemon() async {
     try{
-      final db = await openDatabase(join(await getDatabasesPath(), 'pokemonList.db'));
+      final db = await openDatabase(Path.join(await getDatabasesPath(), 'pokemonList.db'));
 
       Pokemon pokemon = Pokemon(
           name: pokemonNameController.text,
@@ -184,6 +175,9 @@ class _RegisterState extends State<Register> {
       );
       print("Pookemon Inserido");
       clearForm();
+      if(mounted) {
+        Navigator.pop(context);
+      }
     } catch (ex) {
       print("Erro ao inserir pokemon\r\n$ex");
     }
