@@ -25,6 +25,7 @@ class _RegisterState extends State<Register> {
   late FocusNode type1Focus;
   late FocusNode type2Focus;
   var codPokemon = "";
+  bool loadedData = false;
 
   @override
   void initState() {
@@ -50,9 +51,12 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-
-    codPokemon = ModalRoute.of(context)!.settings.arguments != null ? ModalRoute.of(context)!.settings.arguments as String : "";
-    String label = codPokemon.isEmpty ? "Cadastro de novo Pokemon" : "Pokemon ${pokemonIdController.text}";
+    codPokemon = ModalRoute.of(context)!.settings.arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as String
+        : "";
+    String label = codPokemon.isEmpty
+        ? "Cadastro de novo Pokemon"
+        : "Pokemon ${pokemonIdController.text}";
     findPokemon();
     return Scaffold(
       appBar: AppBar(
@@ -106,13 +110,40 @@ class _RegisterState extends State<Register> {
                   ))
                 ],
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      savePokemon();
-                    }
-                  },
-                  child: const Text("Cadastrar"))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  codPokemon.isEmpty
+                      ? ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              savePokemon();
+                            }
+                          },
+                          child: const Text("Cadastrar"))
+                      : ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              updatePokemon();
+                            }
+                          },
+                          child: const Text("Atualizar")),
+                  codPokemon.isNotEmpty ?
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate())  {
+                            await deletePokemon();
+                            setState(() {});
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent),
+                        child: const Text("Cadastrar")),
+                  ) : Container()
+                ],
+              )
             ],
           ),
         ),
@@ -147,7 +178,6 @@ class _RegisterState extends State<Register> {
                   if (type2Controller.text.trim().isNotEmpty) {
                     resume += '   Tipo 2: ${type2Controller.text.trim()}';
                   }
-
                   return AlertDialog(
                     content: Text(resume),
                   );
@@ -167,8 +197,9 @@ class _RegisterState extends State<Register> {
   }
 
   Future<void> savePokemon() async {
-    try{
-      final db = await openDatabase(Path.join(await getDatabasesPath(), 'pokemonList.db'));
+    try {
+      final db = await openDatabase(
+          Path.join(await getDatabasesPath(), 'pokemonList.db'));
 
       Pokemon pokemon = Pokemon(
           name: pokemonNameController.text,
@@ -182,11 +213,32 @@ class _RegisterState extends State<Register> {
       );
       print("Pookemon Inserido");
       clearForm();
-      if(mounted) {
+      if (mounted) {
         Navigator.pop(context);
       }
     } catch (ex) {
       print("Erro ao inserir pokemon\r\n$ex");
+    }
+  }
+
+  Future<void> updatePokemon() async {
+    try {
+      final db = await openDatabase(
+          Path.join(await getDatabasesPath(), 'pokemonList.db'));
+
+      Pokemon novoPokemon = Pokemon(
+          name: pokemonNameController.text,
+          type1: type1Controller.text,
+          type2: type2Controller.text);
+      novoPokemon.id = int.parse(codPokemon);
+
+      db.update('pokemon', novoPokemon.toMap(),
+          where: 'id = ?', whereArgs: [codPokemon]);
+      print("Pokemon Atualizado");
+      if (!mounted) return;
+      Navigator.pop(context);
+    } catch (ex) {
+      print("Erro ao atualizar pokemon\r\n$ex");
     }
   }
 
@@ -201,9 +253,11 @@ class _RegisterState extends State<Register> {
   }
 
   Future<void> findPokemon() async {
-    if(codPokemon.isEmpty) return;
-    final db = await openDatabase(Path.join(await getDatabasesPath(), 'pokemonList.db'));
-    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT * FROM pokemon where id = $codPokemon');
+    if (loadedData || codPokemon.isEmpty) return;
+    final db = await openDatabase(
+        Path.join(await getDatabasesPath(), 'pokemonList.db'));
+    final List<Map<String, dynamic>> maps =
+        await db.rawQuery('SELECT * FROM pokemon where id = $codPokemon');
     Pokemon pokemon = Pokemon(
       id: maps[0]['id'],
       name: maps[0]['name'],
@@ -216,7 +270,27 @@ class _RegisterState extends State<Register> {
       pokemonNameController.text = pokemon.name;
       type1Controller.text = pokemon.type1;
       type2Controller.text = pokemon.type2;
-      codPokemon = "";
+      loadedData = true;
+      print("Dados Populados");
     });
+    return;
+  }
+
+  Future<void> deletePokemon() async {
+    try {
+      final db = await openDatabase(
+          Path.join(await getDatabasesPath(), 'pokemonList.db'));
+
+      db.delete('pokemon',
+        where: 'id = ?',
+        whereArgs: [codPokemon]
+      );
+
+    print("Pokemon Deletado");
+    if (!mounted) return;
+    Navigator.pop(context);
+    } catch (ex) {
+      print("Erro ao deletar pokemon\r\n$ex");
+    }
   }
 }

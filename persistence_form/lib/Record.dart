@@ -37,22 +37,23 @@ class _RecordState extends State<Record> {
                 itemBuilder: (_, i) {
                   Pokemon pokemon = snapshot.data![i];
                   return ListTile(
-                      title: Text(pokemon.name),
+                      title: Text(pokemon.name!),
                       subtitle: Row(
                         children: [
                           Text('Tipo : ${pokemon.type1}'),
-                          pokemon.type2.isNotEmpty
+                          pokemon.type2!.isNotEmpty
                               ? Text(' - ${pokemon.type2}')
                               : Container()
                         ],
                       ),
-                  onTap: (){
-                        Navigator.push(context,
+                  onTap: () async {
+                        await Navigator.push(context,
                             MaterialPageRoute(
                                 builder: (_) => const Register(),
                                 settings: RouteSettings(
                                     arguments: pokemon.id.toString()
                                 )));
+                        setState(() {});
                   },);
                 });
           },
