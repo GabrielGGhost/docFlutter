@@ -29,7 +29,6 @@ class _RegisterState extends State<Register> {
 
   @override
   void initState() {
-    pokemonNameController.addListener(_printLatestValue);
     pokemonNameFocus = FocusNode();
     type1Focus = FocusNode();
     type2Focus = FocusNode();
@@ -140,7 +139,7 @@ class _RegisterState extends State<Register> {
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.redAccent),
-                              child: const Text("Cadastrar")),
+                              child: const Text("Deletar")),
                         )
                       : Container()
                 ],
@@ -191,10 +190,6 @@ class _RegisterState extends State<Register> {
         ],
       ),
     );
-  }
-
-  void _printLatestValue() {
-    print('Second text field: ${pokemonNameController.text}');
   }
 
   Future<void> savePokemon() async {
@@ -283,11 +278,38 @@ class _RegisterState extends State<Register> {
       final db = await openDatabase(
           Path.join(await getDatabasesPath(), 'pokemonList.db'));
 
-      db.delete('pokemon', where: 'id = ?', whereArgs: [codPokemon]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Deleção de Pokemom"),
+            content: const Text("Deseja deletar este pokemon??"),
+            actions: [
+              TextButton(
+                child: const Text("Deletar"),
+                onPressed:  () {
+                  db.delete('pokemon', where: 'id = ?', whereArgs: [codPokemon]);
 
-      print("Pokemon Deletado");
-      if (!mounted) return;
-      Navigator.pop(context);
+                  print("Pokemon Deletado");
+                  if (!mounted) return;
+                  int count = 0;
+                  Navigator.popUntil(context, (route) {
+                    return count++ == 2;
+                  });                },
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.black54
+                ),
+                onPressed:  () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Cancelar"),
+              ),
+            ],
+          );
+        },
+      );
     } catch (ex) {
       print("Erro ao deletar pokemon\r\n$ex");
     }
