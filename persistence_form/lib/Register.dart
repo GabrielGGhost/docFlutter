@@ -128,20 +128,21 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           child: const Text("Atualizar")),
-                  codPokemon.isNotEmpty ?
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate())  {
-                            await deletePokemon();
-                            setState(() {});
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent),
-                        child: const Text("Cadastrar")),
-                  ) : Container()
+                  codPokemon.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await deletePokemon();
+                                  setState(() {});
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.redAccent),
+                              child: const Text("Cadastrar")),
+                        )
+                      : Container()
                 ],
               )
             ],
@@ -257,7 +258,8 @@ class _RegisterState extends State<Register> {
     final db = await openDatabase(
         Path.join(await getDatabasesPath(), 'pokemonList.db'));
     final List<Map<String, dynamic>> maps =
-        await db.rawQuery('SELECT * FROM pokemon where id = $codPokemon');
+        await db.query('pokemon', where: 'id = ?', whereArgs: [codPokemon]);
+
     Pokemon pokemon = Pokemon(
       id: maps[0]['id'],
       name: maps[0]['name'],
@@ -281,14 +283,11 @@ class _RegisterState extends State<Register> {
       final db = await openDatabase(
           Path.join(await getDatabasesPath(), 'pokemonList.db'));
 
-      db.delete('pokemon',
-        where: 'id = ?',
-        whereArgs: [codPokemon]
-      );
+      db.delete('pokemon', where: 'id = ?', whereArgs: [codPokemon]);
 
-    print("Pokemon Deletado");
-    if (!mounted) return;
-    Navigator.pop(context);
+      print("Pokemon Deletado");
+      if (!mounted) return;
+      Navigator.pop(context);
     } catch (ex) {
       print("Erro ao deletar pokemon\r\n$ex");
     }
