@@ -16,6 +16,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
+  final pokemonIdController = TextEditingController();
   final pokemonNameController = TextEditingController();
   final type1Controller = TextEditingController();
   final type2Controller = TextEditingController();
@@ -23,6 +24,7 @@ class _RegisterState extends State<Register> {
   late FocusNode pokemonNameFocus;
   late FocusNode type1Focus;
   late FocusNode type2Focus;
+  var codPokemon = "";
 
   @override
   void initState() {
@@ -42,14 +44,19 @@ class _RegisterState extends State<Register> {
     pokemonNameFocus.dispose();
     type1Focus.dispose();
     type2Focus.dispose();
+    pokemonIdController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    codPokemon = ModalRoute.of(context)!.settings.arguments != null ? ModalRoute.of(context)!.settings.arguments as String : "";
+    String label = codPokemon.isEmpty ? "Cadastro de novo Pokemon" : "Pokemon ${pokemonIdController.text}";
+    findPokemon();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Registro de Pokemon"),
+        title: Text(label),
       ),
       body: Padding(
         padding: const EdgeInsets.all(Constantes.defaultScreenPadding),
@@ -190,6 +197,26 @@ class _RegisterState extends State<Register> {
       type2Controller.clear();
 
       pokemonNameFocus.requestFocus();
+    });
+  }
+
+  Future<void> findPokemon() async {
+    if(codPokemon.isEmpty) return;
+    final db = await openDatabase(Path.join(await getDatabasesPath(), 'pokemonList.db'));
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT * FROM pokemon where id = $codPokemon');
+    Pokemon pokemon = Pokemon(
+      id: maps[0]['id'],
+      name: maps[0]['name'],
+      type1: maps[0]['type1'],
+      type2: maps[0]['type2'],
+    );
+
+    setState(() {
+      pokemonIdController.text = pokemon!.id.toString();
+      pokemonNameController.text = pokemon.name;
+      type1Controller.text = pokemon.type1;
+      type2Controller.text = pokemon.type2;
+      codPokemon = "";
     });
   }
 }

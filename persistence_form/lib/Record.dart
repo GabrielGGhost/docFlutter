@@ -45,7 +45,15 @@ class _RecordState extends State<Record> {
                               ? Text(' - ${pokemon.type2}')
                               : Container()
                         ],
-                      ));
+                      ),
+                  onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (_) => const Register(),
+                                settings: RouteSettings(
+                                    arguments: pokemon.id.toString()
+                                )));
+                  },);
                 });
           },
         ),
@@ -58,10 +66,10 @@ class _RecordState extends State<Record> {
                 heroTag: 'btnNew',
                 child: const Icon(Icons.add),
                 onPressed: () async {
-                  await Navigator.pushNamed(context, Register.route);
-                  setState(() {
-
-                  });
+                  await Navigator.pushNamed(
+                      context,
+                      Register.route);
+                  setState(() {});
                 }),
           )
         ]));
