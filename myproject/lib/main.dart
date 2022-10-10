@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myproject/Front1.dart';
 
 import 'RandomWords.dart';
 
@@ -11,6 +12,6 @@ void main() {
         foregroundColor: Colors.black,
       ),
     ),
-    home: const RandomWords(),
+    home: const Front1(),
   ));
 }
