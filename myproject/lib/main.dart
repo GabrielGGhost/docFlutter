@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myproject/AdaptativeApp/PeopleList/MainList.dart';
 import 'package:myproject/Front1.dart';
 
 import 'RandomWords.dart';
@@ -12,6 +13,6 @@ void main() {
         foregroundColor: Colors.black,
       ),
     ),
-    home: const Front1(),
+    home: const MainList(),
   ));
 }
