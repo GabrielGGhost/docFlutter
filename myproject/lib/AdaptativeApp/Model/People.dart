@@ -2,13 +2,44 @@ class Person {
   String name;
   String phone;
   String picture;
+  int index;
   bool isSelected = false;
+  bool isActive;
+  String balance;
+  int age;
+  String gender;
+  String email;
+  String address;
+  String company;
 
-  Person(this.name, this.phone, this.picture);
+  Person(
+      this.name,
+      this.phone,
+      this.picture,
+      this.index,
+      this.isActive,
+      this.balance,
+      this.age,
+      this.gender,
+      this.email,
+      this.address,
+      this.company);
 }
 
-final people =
-    _people.map((e) => Person(e['name'], e['phone'], e['picture'])).toList(growable: false);
+final people = _people
+    .map((e) => Person(
+        e['name'],
+        e['phone'],
+        e['picture'],
+        e['index'],
+        e['isActive'],
+        e['balance'],
+        e['age'],
+        e['gender'],
+        e['email'],
+        e['address'],
+        e['company']))
+    .toList(growable: false);
 
 final List<Map<String, dynamic>> _people = [
   {
@@ -17,11 +48,12 @@ final List<Map<String, dynamic>> _people = [
     "guid": "ff98bd8a-a590-40e1-80d0-c0547cae75a7",
     "isActive": true,
     "balance": "\$1,698.70",
-    "picture": "https://media.istockphoto.com/vectors/pixel-watermelon-icon-32x32-vector-illustration-vector-id1220104375?k=20&m=1220104375&s=170667a&w=0&h=8X0RnR5C6AshuAgjd2eimU-2kTQs0ChUHapCZDCnHl0=",
+    "picture":
+        "https://media.istockphoto.com/vectors/pixel-watermelon-icon-32x32-vector-illustration-vector-id1220104375?k=20&m=1220104375&s=170667a&w=0&h=8X0RnR5C6AshuAgjd2eimU-2kTQs0ChUHapCZDCnHl0=",
     "age": 38,
     "eyeColor": "green",
     "name": "Mclean Hogan",
-    "gender": "male",
+    "gender": "Masculino",
     "company": "PARLEYNET",
     "email": "mcleanhogan@parleynet.com",
     "phone": "+1 (840) 412-2101",
@@ -47,11 +79,12 @@ final List<Map<String, dynamic>> _people = [
     "guid": "a70af015-bc61-4423-b036-88bee93f41b4",
     "isActive": true,
     "balance": "\$3,478.62",
-    "picture": "https://image.shutterstock.com/image-vector/pixel-art-pea-icon-32x32-260nw-1709448274.jpg",
+    "picture":
+        "https://image.shutterstock.com/image-vector/pixel-art-pea-icon-32x32-260nw-1709448274.jpg",
     "age": 32,
     "eyeColor": "blue",
     "name": "Allison Gardner",
-    "gender": "female",
+    "gender": "Feminino",
     "company": "XYQAG",
     "email": "allisongardner@xyqag.com",
     "phone": "+1 (881) 463-2232",
@@ -76,11 +109,12 @@ final List<Map<String, dynamic>> _people = [
     "guid": "0e301a91-4032-4acb-bb41-6bc153c753ec",
     "isActive": true,
     "balance": "\$1,396.10",
-    "picture": "https://image.shutterstock.com/image-vector/pixel-art-strawberry-icon-32x32-260nw-1697548984.jpg",
+    "picture":
+        "https://image.shutterstock.com/image-vector/pixel-art-strawberry-icon-32x32-260nw-1697548984.jpg",
     "age": 23,
     "eyeColor": "blue",
     "name": "Lola Salinas",
-    "gender": "female",
+    "gender": "Feminino",
     "company": "GOKO",
     "email": "lolasalinas@goko.com",
     "phone": "+1 (971) 531-2898",
@@ -113,11 +147,12 @@ final List<Map<String, dynamic>> _people = [
     "guid": "baede0d1-c228-413e-8858-043343c550fd",
     "isActive": false,
     "balance": "\$3,321.72",
-    "picture": "https://media.istockphoto.com/vectors/pixel-art-pumpkin-icon-32x32-vector-illustration-vector-id1220114881",
+    "picture":
+        "https://media.istockphoto.com/vectors/pixel-art-pumpkin-icon-32x32-vector-illustration-vector-id1220114881",
     "age": 20,
     "eyeColor": "brown",
     "name": "Clemons Waters",
-    "gender": "male",
+    "gender": "Masculino",
     "company": "SYNKGEN",
     "email": "clemonswaters@synkgen.com",
     "phone": "+1 (902) 496-2337",
@@ -150,11 +185,12 @@ final List<Map<String, dynamic>> _people = [
     "guid": "be9e0c0e-7f0f-40cd-bdd6-2258d5a7bfc0",
     "isActive": true,
     "balance": "\$2,434.31",
-    "picture": "https://thumbs.dreamstime.com/b/%C3%ADcone-da-banana-de-arte-em-pixels-ilustra%C3%A7%C3%A3o-vetorial-um-fundo-branco-179923290.jpg",
+    "picture":
+        "https://thumbs.dreamstime.com/b/%C3%ADcone-da-banana-de-arte-em-pixels-ilustra%C3%A7%C3%A3o-vetorial-um-fundo-branco-179923290.jpg",
     "age": 24,
     "eyeColor": "blue",
     "name": "Christensen Snider",
-    "gender": "male",
+    "gender": "Masculino",
     "company": "ACCEL",
     "email": "christensensnider@accel.com",
     "phone": "+1 (830) 502-2096",
@@ -187,11 +223,12 @@ final List<Map<String, dynamic>> _people = [
     "guid": "14c7ad8a-8445-43b1-a7ab-912c1c591f36",
     "isActive": true,
     "balance": "\$3,559.16",
-    "picture": "https://media.istockphoto.com/vectors/pixel-art-bunch-of-grapes-icon-32x32-vector-vector-id1220115698",
+    "picture":
+        "https://media.istockphoto.com/vectors/pixel-art-bunch-of-grapes-icon-32x32-vector-vector-id1220115698",
     "age": 36,
     "eyeColor": "green",
     "name": "Maxwell Austin",
-    "gender": "male",
+    "gender": "Masculino",
     "company": "AVENETRO",
     "email": "maxwellaustin@avenetro.com",
     "phone": "+1 (926) 583-3329",
@@ -216,11 +253,12 @@ final List<Map<String, dynamic>> _people = [
     "guid": "c3c927ef-a696-438a-879c-91176a76e28a",
     "isActive": true,
     "balance": "\$2,387.66",
-    "picture": "https://image.shutterstock.com/image-vector/pixel-baked-fish-style-icon-260nw-1714053685.jpg",
+    "picture":
+        "https://image.shutterstock.com/image-vector/pixel-baked-fish-style-icon-260nw-1714053685.jpg",
     "age": 21,
     "eyeColor": "green",
     "name": "Tabatha Kennedy",
-    "gender": "female",
+    "gender": "Feminino",
     "company": "SILODYNE",
     "email": "tabathakennedy@silodyne.com",
     "phone": "+1 (932) 458-3942",

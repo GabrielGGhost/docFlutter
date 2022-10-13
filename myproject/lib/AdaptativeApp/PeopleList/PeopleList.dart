@@ -11,8 +11,10 @@ class PeopleList extends StatelessWidget {
   final String? pictureSide;
   final Color selected = Colors.redAccent;
   final _people = people;
+
   @override
   Widget build(BuildContext context) {
+
     return ListView(
       children: <Widget>[
         for (var person in _people)

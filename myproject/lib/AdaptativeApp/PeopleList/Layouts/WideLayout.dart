@@ -17,8 +17,8 @@ class _WideLayoutState extends State<WideLayout> {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Expanded(
-          flex: 2,
+      SizedBox(
+          width: 350,
           child: PeopleList(
             onPersonTap: (person) => setState(() {
               if(_person != person) {
@@ -31,7 +31,7 @@ class _WideLayoutState extends State<WideLayout> {
           ),),
       Expanded(
           flex: 3,
-          child: _person == null ? const Center(child: Text("Selecione um pedido"),) : PersonDetail(_person!),
+          child: _person == null ? const Center(child: Text("Selecione um Usuário"),) : PersonDetail(_person!),
       )
 
     ]);
