@@ -13,7 +13,7 @@ class MainList extends StatelessWidget {
       ),
       body: LayoutBuilder(
         builder: (context, constraints){
-          if(constraints.maxWidth > 700){
+          if(constraints.maxWidth > 600){
             return const WideLayout();
           } else {
             return const NarrowLayout();

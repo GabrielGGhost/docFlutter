@@ -11,29 +11,32 @@ class WideLayout extends StatefulWidget {
 }
 
 class _WideLayoutState extends State<WideLayout> {
-
   Person? _person;
 
   @override
   Widget build(BuildContext context) {
     return Row(children: [
       SizedBox(
-          width: 350,
-          child: PeopleList(
-            onPersonTap: (person) => setState(() {
-              if(_person != person) {
-                _person = person;
-              } else {
-                _person = null;
-              }
-            }),
-            pictureSide: "right",
-          ),),
+        width: 300,
+        child: PeopleList(
+          onPersonTap: (person) => setState(() {
+            if (_person != person) {
+              _person = person;
+            } else {
+              _person = null;
+            }
+          }),
+          pictureSide: "right",
+        ),
+      ),
       Expanded(
-          flex: 3,
-          child: _person == null ? const Center(child: Text("Selecione um Usuário"),) : PersonDetail(_person!),
+        flex: 3,
+        child: _person == null
+            ? const Center(
+                child: Text("Selecione um Usuário"),
+              )
+            : PersonDetail(_person!),
       )
-
     ]);
   }
 }
