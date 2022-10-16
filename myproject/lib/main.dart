@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:myproject/AdaptativeApp/PeopleList/MainList.dart';
 import 'package:myproject/Front1.dart';
-
-import 'ConstraintsTipos/ConstraintsTipos.dart';
-import 'RandomWords.dart';
+import 'package:myproject/HomeMenu.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    home: ConstraintsTipos(),
+  runApp(MaterialApp(
+    initialRoute: '/',
+    routes: {
+      HomeMenu.route : (context) => const HomeMenu(),
+      Front1.route : (context) => const Front1(),
+    }
   ));
 }

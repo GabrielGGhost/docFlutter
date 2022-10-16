@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myproject/Front1/Avaliate.dart';
 
 class TitleAnime extends StatelessWidget {
   TitleAnime({Key? key}) : super(key: key);
@@ -21,8 +21,7 @@ class TitleAnime extends StatelessWidget {
                     style: TextStyle(color: Colors.grey))
               ],
             )),
-        const Icon(Icons.star, color: Colors.redAccent),
-        const Text('8,3')
+        const Avaliate()
       ],
     ),
   );

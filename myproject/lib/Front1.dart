@@ -7,6 +7,8 @@ import 'package:myproject/Front1/TitleAnime.dart';
 class Front1 extends StatelessWidget {
   const Front1({Key? key}) : super(key: key);
 
+  static const route = 'front1';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
