@@ -50,7 +50,7 @@ class _TapboxCState extends State<TapboxC> {
       onTapDown: _handleTapDown, // Handle the tap events in the order that
       onTapUp: _handleTapUp, // they occur: down, up, tap, cancel
       onTap: _handleTap,
-      
+
       onTapCancel: _handleTapCancel,
       child: Container(
         width: 200.0,
