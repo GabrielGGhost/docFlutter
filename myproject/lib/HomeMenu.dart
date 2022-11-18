@@ -52,7 +52,15 @@ class HomeMenu extends StatelessWidget {
                   onTap: (){
                     Navigator.pushNamed(context, ManagingState3.route);
                   },
-                )
+                ),
+                ListTile(
+                  leading: const Icon(Icons.screen_lock_portrait),
+                  title: const Text("ManagingState3"),
+                  subtitle: const Text("Gerenciamento de estado pelo filho e pelo pai"),
+                  onTap: (){
+                    Navigator.pushNamed(context, 'infinite');
+                  },
+                ),
               ],
             )
           ],
